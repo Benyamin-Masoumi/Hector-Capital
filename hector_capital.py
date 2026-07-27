@@ -31,3 +31,27 @@ class HectorCapital:
         # Append the new row and save back to the CSV file
         df = pd.concat([df, new_row], ignore_index = True)
         df.to_csv(self.file_name, index=False)
+
+    # Method to calculate overall financial standing (income, expenses, and net balance)
+    def get_financial_summary(self):
+        df = pd.read_csv(self.file_name)
+
+        # Handle case where no data has been entered yet
+        if df.shape[0] == 0:
+            return "No transactions recorded yet."
+
+        # Compute totals using pandas boolean masking and summation
+        total_income = df[df["type"] == "income"]["amount"].sum()
+        total_expense = df[df["type"] == "expense"]["amount"].sum()
+        net_balance = total_income - total_expense
+
+        summary_msg = f"""
+        =========================================
+        📊 HECTOR CAPITAL - FINANCIAL SUMMARY
+        =========================================
+        💰 Total Income: ${total_income:,.2f}
+        💸 Total Expenses: ${total_expense:,.2f}
+        ⚖️ Net Balance: ${net_balance:,.2f}
+        =========================================
+        """
+        return summary_msg
