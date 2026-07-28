@@ -71,4 +71,22 @@ class HectorCapital:
         for cat, total in category_sum.items():
             report += f"🔹 [{cat}]: ${total:,.2f}\n"
         return report
-    
+    # Method to retrieve and format the very last recorded transaction
+    def recent_transaction(self):
+        df = pd.read_csv(self.file_name)
+        if df.shape[0] == 0:
+            return "No transactions available."
+        
+        # Extract the last row of the dataset
+        last = df.iloc[-1]
+        t_type = "Income 🟢" if last["type"] == "income" else "Expense 🔴"
+
+        return f"""
+        --- RECENT TRANSACTION ---
+        Date: {last['date']}
+        Type: {t_type}
+        Category: {last['category']}
+        Amount: ${last['amount']:,.2f}
+        Notes: {last['notes']}
+        --------------------------
+        """
