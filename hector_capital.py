@@ -55,3 +55,20 @@ class HectorCapital:
         =========================================
         """
         return summary_msg
+
+    # Method to group expenses by category and generate a structured report
+    def get_category_report(self):
+        df = pd.read_csv(self.file_name)
+        expenses_df = df[df["type"] == "expense"]
+
+        if expenses_df.shape[0] == 0:
+            return "No expenses recorded."
+
+        # Aggregate total expenses per category
+        category_sum = expenses_df.groupby("category")["amount"].sum()
+
+        report = "\n--- 📑 EXPENSE BREAKDOWN BY CATEGORY ---\n"
+        for cat, total in category_sum.items():
+            report += f"🔹 [{cat}]: ${total:,.2f}\n"
+        return report
+    
