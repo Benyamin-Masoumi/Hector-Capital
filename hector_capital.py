@@ -90,3 +90,65 @@ class HectorCapital:
         Notes: {last['notes']}
         --------------------------
         """
+# --- Main Application Loop ---
+if __name__ == "__main__":
+    # Instantiate the core management object
+    hector = HectorCapital()
+    message = "🚀 Welcome to Hector Capital Financial Management System!"
+
+    # Interactive console loop
+    while True:
+        menu = """
+-----------------------------------------
+1. Add New Income 🟢
+2. Add New Expense 🔴
+3. View Financial Summary 📊
+4. View Expense Breakdown by Category 📑
+5. View Recent Transaction 🔍
+6. Exit ❌
+-----------------------------------------
+Enter your choice: """
+        user_input = input(message + menu).strip()
+
+        # Handle user selection for adding income
+        if user_input == "1":
+            category = input("Enter income category (e.g., Salary, Project): ").strip()
+            try:
+                amount = float(input("Enter income amount: "))
+                notes = input("Enter additional notes: ").strip()
+                hector.add_transaction("income", category, amount, notes)
+                message = f"✅ Successfully added income of ${amount:,.2f}."
+            except  ValueError:
+                message = "❌ Error: Please enter a valid number for the amount!"
+        # Handle user selection for adding expense with validation against negative numbers
+        elif user_input == "2":
+            category = input("Enter expense category (e.g., Food, Transport): ").strip()
+            try:
+                amount = float(input("Enter expense amount: "))
+                while amount < 0:
+                    amount = float(input("Amount cannot be negative. Enter again: "))
+                notes = input("Enter additional notes: ").strip()
+                hector.add_transaction("expense", category, amount, notes)
+                message = f"✅ Successfully recorded expense of ${amount:,.2f} under '{category}'."
+            except ValueError:
+                message = "❌ Error: Please enter a valid number for the amount!"
+
+        # Handle viewing financial summary
+        elif user_input == "3":
+            message = hector.get_financial_summary()
+
+        # Handle viewing categorized expense breakdown
+        elif user_input == "4":
+            message = hector.get_category_report()
+
+        # Handle viewing the most recent transaction
+        elif user_input == "5":
+            message = hector.recent_transaction()
+
+        # Exit the application loop
+        elif user_input == "6":
+            print("\nGoodbye, friend! Hector Capital is always here to secure your wealth.")
+            break
+        # Handle invalid inputs gracefully
+        else:
+            message = "❌ Invalid option! Please select a number between 1 and 6."
