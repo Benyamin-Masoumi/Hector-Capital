@@ -1,5 +1,30 @@
 import datetime as dt
 import pandas as pd
+import time
+
+# Shows a professional sign-off message with version, company name, and GitHub link.
+def show_info():
+    return """
+Goodbye, friend! Hector Capital is always here to secure your wealth.
+===========================================================
+                Hector Capital
+===========================================================
+ Powered by Hector Tech ™ © 2026  |  Version 1.0.1
+===========================================================
+ 🔗 GitHub: https://github.com/Benyamin-Masoumi/Hector-Capital
+===========================================================
+           """
+
+
+# This function improves the user experience (UX) of the command-line interface (CLI) by printing text gradually (line-by-line) with a typing animation.
+def type_lines(text, line_delay = 0.15, char_delay = 0.015, flush = True):
+    lines = text.splitlines()
+    for line in lines:
+        for char in line:
+            print(char, end= "", flush = True)
+            time.sleep(char_delay)
+        print()
+        time.sleep(line_delay)
 
 class HectorCapital:
     # Initialize the Hector Capital manager with a designated CSV filename
@@ -94,7 +119,7 @@ class HectorCapital:
 if __name__ == "__main__":
     # Instantiate the core management object
     hector = HectorCapital()
-    message = "🚀 Welcome to Hector Capital Financial Management System!"
+    message = "🚀 Welcome to Hector Capital Financial Management System!(Version 1.0.1)"
 
     # Interactive console loop
     while True:
@@ -106,9 +131,9 @@ if __name__ == "__main__":
 4. View Expense Breakdown by Category 📑
 5. View Recent Transaction 🔍
 6. Exit ❌
------------------------------------------
-Enter your choice: """
-        user_input = input(message + menu).strip()
+-----------------------------------------"""
+        type_lines(message + menu)
+        user_input = input("Enter your choice: ").strip()
 
         # Handle user selection for adding income
         if user_input == "1":
@@ -118,7 +143,7 @@ Enter your choice: """
                 notes = input("Enter additional notes: ").strip()
                 hector.add_transaction("income", category, amount, notes)
                 message = f"✅ Successfully added income of ${amount:,.2f}."
-            except  ValueError:
+            except ValueError:
                 message = "❌ Error: Please enter a valid number for the amount!"
         # Handle user selection for adding expense with validation against negative numbers
         elif user_input == "2":
@@ -147,7 +172,7 @@ Enter your choice: """
 
         # Exit the application loop
         elif user_input == "6":
-            print("\nGoodbye, friend! Hector Capital is always here to secure your wealth.")
+            type_lines(show_info())
             break
         # Handle invalid inputs gracefully
         else:
